@@ -1,6 +1,7 @@
 // Copyright 2020 Your Name <your_email>
 
 #include <CreateStorage.hpp>
+#include <iostream>
 void CreateRandomDataBase(const std::string& directory) {
   const unsigned int NUMBER_OF_COLUMNS = 5;
   const unsigned int NUMBER_OF_VALUES = 50;
@@ -52,8 +53,55 @@ void CreateRandomDataBase(const std::string& directory) {
       if (!status.ok()) throw std::runtime_error{"DestroyColumnFamily failed"};
     }
 
+    //    names.clear();
+    //    rocksdb::DB::ListColumnFamilies(rocksdb::DBOptions(), directory,
+    //    &names); for(size_t i = 0; i < names.size(); i++){
+    //      if (names[i] == rocksdb::kDefaultColumnFamilyName)
+    //        names.erase(names.begin() + i);
+    //      std::cout << names[i] << "  ";
+    //    }
+
     delete db;
     BOOST_LOG_TRIVIAL(debug) << "Random data base created";
+
+  } catch (std::exception& e) {
+    BOOST_LOG_TRIVIAL(fatal) << e.what();
+  }
+}
+
+void TryOpen(const std::string& directory) {
+  try {
+    rocksdb::Options options;
+    rocksdb::DB* db;
+    std::vector<std::string> names;
+    std::vector<rocksdb::ColumnFamilyDescriptor> descriptors;
+    rocksdb::Status s = rocksdb::DB::ListColumnFamilies(rocksdb::DBOptions(), directory, &names);
+    if (!s.ok())
+      throw std::runtime_error{"ListColumn failed"};
+
+    descriptors.reserve(names.size());
+    for (auto& x : names) {
+      descriptors.emplace_back(x, rocksdb::ColumnFamilyOptions());
+    }
+
+    std::vector<rocksdb::ColumnFamilyHandle*> handles;
+    s = rocksdb::DB::OpenForReadOnly(
+        rocksdb::DBOptions(), directory, descriptors, &handles, &db);
+    if (!s.ok()) throw std::runtime_error{"DB::OpenForReadOnly failed"};
+
+    rocksdb::Iterator* it = db->NewIterator(rocksdb::ReadOptions(), handles[1]);
+    for (it->SeekToFirst(); it->Valid(); it->Next()) {
+      BOOST_LOG_TRIVIAL(trace)
+          << it->key().ToString() << ":" << it->value().ToString() << " can be read";
+    }
+    if (!it->status().ok()) throw std::runtime_error("Iterator failed");
+    delete it;
+
+    for (auto& x : handles) {
+      s = db->DestroyColumnFamilyHandle(x);
+      if (!s.ok()) throw std::runtime_error{"DestroyColumnFamily failed"};
+    }
+    delete db;
 
   } catch (std::exception& e) {
     BOOST_LOG_TRIVIAL(fatal) << e.what();

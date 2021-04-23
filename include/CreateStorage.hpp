@@ -12,6 +12,7 @@
 
 void CreateRandomDataBase(const std::string& directory);
 
+void TryOpen(const std::string& directory);
 
 
 #endif // INCLUDE_HEADER_HPP_

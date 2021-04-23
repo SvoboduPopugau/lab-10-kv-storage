@@ -37,6 +37,7 @@ int main(){
   Init_logger(level);
   std::string directory = "TESTDB";
   CreateRandomDataBase(directory);
+  TryOpen(directory);
 }
 
 
