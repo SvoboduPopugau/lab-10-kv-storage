@@ -21,7 +21,7 @@ void Init_logger(const std::string& sev_level) {
                                       choose_sev_level(sev_level));
 
   boost::log::add_console_log(
-      std::cout, boost::log::keywords::format =
+      std::clog, boost::log::keywords::format =
                      "[%TimeStamp%][%ThreadID%][%Severity%]: %Message%");
 
   boost::log::add_file_log(
