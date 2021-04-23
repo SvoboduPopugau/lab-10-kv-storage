@@ -22,7 +22,7 @@ HunterGate(
 )
 
 # TODO: rename project and delete this comment
-project(template VERSION 0.1.0)
+project(lab-10-kv-storage VERSION 0.1.0)
 string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra")
 string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
 string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
@@ -33,16 +33,16 @@ find_package(gflags CONFIG REQUIRED)
 hunter_add_package(rocksdb)
 find_package(RocksDB CONFIG REQUIRED)
 
-hunter_add_package(Boost COMPONENTS program_options)
-find_package(Boost CONFIG REQUIRED program_options)
+hunter_add_package(Boost COMPONENTS log filesystem system chrono thread regex date_time atomic program_options)
+find_package(Boost CONFIG REQUIRED log log_setup filesystem system chrono thread regex date_time atomic program_options)
 
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 
 add_library(${PROJECT_NAME} STATIC
   # enum your files and delete this comment
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/source.cpp
-)
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/CreateStorage.cpp
+        sources/log_settings.cpp include/log_settings.hpp sources/StorageManager.cpp include/StorageManager.hpp)
 
 add_executable(demo
   ${CMAKE_CURRENT_SOURCE_DIR}/demo/main.cpp
@@ -52,8 +52,24 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include>"
 )
+include_directories(
+        ${CMAKE_CURRENT_SOURCE_DIR}/Third-party/PicoSHA
+)
 
+target_link_libraries(${PROJECT_NAME}
+        Boost::log_setup
+        Boost::log
+        Boost::filesystem
+        Boost::chrono
+        Boost::thread
+        Boost::regex
+        Boost::date_time
+        Boost::atomic
+        Boost::system
+        Boost::boost
+        )
 target_link_libraries(demo ${PROJECT_NAME})
+
 
 if(BUILD_TESTS)
   add_executable(tests
