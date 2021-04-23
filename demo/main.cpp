@@ -5,6 +5,7 @@
 
 #include "CreateStorage.hpp"
 #include "log_settings.hpp"
+#include <rocksdb/db.h>
 
 //int main() {
 //  rocksdb::DB* db = nullptr;
@@ -31,6 +32,7 @@
 //}
 
 int main(){
+
   std::string level = "trace";
   Init_logger(level);
   std::string directory = "TESTDB";

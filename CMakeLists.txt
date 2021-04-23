@@ -67,6 +67,7 @@ target_link_libraries(${PROJECT_NAME}
         Boost::atomic
         Boost::system
         Boost::boost
+        RocksDB::rocksdb
         )
 target_link_libraries(demo ${PROJECT_NAME})
 

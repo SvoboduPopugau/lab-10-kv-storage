@@ -21,7 +21,7 @@ void Init_logger(const std::string& sev_level) {
                                       choose_sev_level(sev_level));
 
   boost::log::add_console_log(
-      std::clog, boost::log::keywords::format =
+      std::cout, boost::log::keywords::format =
                      "[%TimeStamp%][%ThreadID%][%Severity%]: %Message%");
 
   boost::log::add_file_log(
@@ -29,5 +29,5 @@ void Init_logger(const std::string& sev_level) {
       boost::log::keywords::rotation_size = 20 * 1024 * 1024,
       boost::log::keywords::time_based_rotation =
           boost::log::sinks::file::rotation_at_time_point(0, 0, 0),
-      boost::log::keywords::format = "[%Severity%] %TimeStamp%: %Message%");
+      boost::log::keywords::format = "[%TimeStamp%][%Severity%]: %Message%");
 }
