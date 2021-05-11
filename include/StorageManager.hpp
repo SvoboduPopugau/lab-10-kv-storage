@@ -12,6 +12,7 @@
 #include <boost/log/trivial.hpp>
 #include "MyQueue.hpp"
 #include "CreateStorage.hpp"
+#include <ThreadPool.h>
 
 
 struct Cell{
@@ -24,12 +25,14 @@ struct Cell{
 
 class StorageManager {
  public:
-  StorageManager(std::string& input_filename, std::string& output_filename);
+  StorageManager(std::string& input_filename, std::string& output_filename, size_t number_of_threads);
   ~StorageManager();
   void WriteValue(Cell&& KeyHash);
   void ParseInputDB();
   void Hash(Cell& cell);
   void WriteIntoOutputDB();
+  void MainWork();
+  void HashParsed();
 
 
  private:
@@ -37,16 +40,16 @@ class StorageManager {
   bool HashFlag_ = false;
   bool WriteFlag_ = false;
  private:
-  std::mutex WriteMutex_;
   MyQueue<Cell> HashQueue_;
   MyQueue<Cell> WriteQueue_;
   std::string input_;
   std::string output_;
   std::vector<rocksdb::ColumnFamilyHandle*> fromHandles_;
   std::vector<rocksdb::ColumnFamilyHandle*> outHandles_;
-  std::unique_ptr<rocksdb::DB> fromDb_ = nullptr;
-  std::unique_ptr<rocksdb::DB> outputDb_ = nullptr;
+  rocksdb::DB* fromDb_ = nullptr;
+  rocksdb::DB* outputDb_ = nullptr;
   size_t numberOfThreads_ = std::thread::hardware_concurrency();
+  ThreadPool HashPool_;
 };
 
 #endif  // STORAGEMANAGER_HPP
