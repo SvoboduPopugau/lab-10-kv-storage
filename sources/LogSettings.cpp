@@ -1,4 +1,4 @@
-#include "log_settings.hpp"
+#include "LogSettings.hpp"
 
 boost::log::trivial::severity_level choose_sev_level(
     const std::string& sev_level) {

@@ -107,3 +107,6 @@ void TryOpen(const std::string& directory) {
     BOOST_LOG_TRIVIAL(fatal) << e.what();
   }
 }
+std::string sha256(const std::string& key, const std::string& value) {
+    return picosha2::hash256_hex_string(std::string(key + value));
+}

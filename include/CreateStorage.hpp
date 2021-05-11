@@ -9,10 +9,13 @@
 #include <rocksdb/options.h>
 #include <rocksdb/slice.h>
 #include <rocksdb/advanced_options.h>
+#include <picosha2.h>
 
 void CreateRandomDataBase(const std::string& directory);
 
 void TryOpen(const std::string& directory);
+
+std::string sha256(const std::string& key, const std::string& value);
 
 
 #endif // INCLUDE_HEADER_HPP_

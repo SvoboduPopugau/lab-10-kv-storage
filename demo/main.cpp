@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include "CreateStorage.hpp"
-#include "log_settings.hpp"
-#include <rocksdb/db.h>
+#include "LogSettings.hpp"
+#include "StorageManager.hpp"
 
 //int main() {
 //  rocksdb::DB* db = nullptr;
@@ -33,11 +33,36 @@
 
 int main(){
 
-  std::string level = "trace";
-  Init_logger(level);
-  std::string directory = "TESTDB";
-  CreateRandomDataBase(directory);
-  TryOpen(directory);
+//  std::string level = "trace";
+//  Init_logger(level);
+//  std::string directory = "TESTDB";
+//  CreateRandomDataBase(directory);
+//  TryOpen(directory);
+
+  Cell* a = new Cell;
+  a->HandleNumber = 2;
+  a->Key = "key";
+  a->Value = "val";
+
+  std::unique_ptr<Cell> ptr = nullptr;
+
+  ptr.reset(a);
+
+  std::cout << ptr->Key << std::endl;
+  std::cout << a->Value << std::endl;
+
+  a = new Cell{9, "Hey", "Varvar"};
+
+  std::cout << ptr->Value << std::endl;
+  std::cout << a->Value << std::endl;
+  delete a;
+
+  std::vector<int> vec;
+  vec.reserve(10);
+  for(int i = 0; i < 10; i++){
+    vec.push_back(i);
+  }
+  std::cout << vec.size();
 }
 
 
