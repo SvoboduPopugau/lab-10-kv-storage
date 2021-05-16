@@ -1,7 +1,7 @@
 // Copyright 2020 Your Name <your_email>
 
-#ifndef STORAGE_STORAGEMANAGER_HPP_
-#define STORAGE_STORAGEMANAGER_HPP_
+#ifndef  INCLUDE_STORAGEMANAGER_HPP_
+#define  INCLUDE_STORAGEMANAGER_HPP_
 
 #include <rocksdb/db.h>
 
@@ -54,4 +54,4 @@ class StorageManager {
   ThreadPool HashPool_;
 };
 
-#endif  // STORAGEMANAGER_HPP_
+#endif  //  INCLUDE_STORAGEMANAGER_HPP_

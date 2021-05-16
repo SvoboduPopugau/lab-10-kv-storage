@@ -101,7 +101,6 @@ void TryOpen(const std::string& directory) {
       if (!s.ok()) throw std::runtime_error{"DestroyColumnFamily failed"};
     }
     delete db;
-
   } catch (std::exception& e) {
     BOOST_LOG_TRIVIAL(fatal) << e.what();
   }

@@ -1,7 +1,7 @@
 // Copyright 2020 Your Name <your_email>
 
-#ifndef LOG_SETTINGS_HPP_
-#define LOG_SETTINGS_HPP_
+#ifndef INCLUDE_LOGSETTINGS_HPP_
+#define INCLUDE_LOGSETTINGS_HPP_
 
 #include <string>
 #include <boost/log/core.hpp>
@@ -13,4 +13,4 @@
 
 [[maybe_unused]]void Init_logger(const std::string& sev_level);
 
-#endif  // LOG_SETTINGS_HPP_
+#endif  // INCLUDE_LOGSETTINGS_HPP_
