@@ -12,11 +12,11 @@ int main(){
   std::string level = "trace";
   Init_logger(level);
   std::string directory = "TESTDB";
-//  CreateRandomDataBase(directory);
-  std::string output = "OUTPUT";
-
-  StorageManager Man(directory, output, 4);
-  Man.MainWork();
+  CreateRandomDataBase(directory);
+//  std::string output = "OUTPUT";
+//
+//  StorageManager Man(directory, output, 4);
+//  Man.MainWork();
 }
 
 

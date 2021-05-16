@@ -33,7 +33,8 @@ void CreateRandomDataBase(const std::string& directory) {
     for (unsigned c = 0; c < NUMBER_OF_COLUMNS; c++) {
       for (unsigned int i = 0; i < NUMBER_OF_VALUES; i++) {
         key = "key-" + std::to_string((c * NUMBER_OF_VALUES) + i);
-        value = "value-" + std::to_string(rand() % 100);
+        unsigned int var = 1;
+        value = "value-" + std::to_string(rand_r(&var) % 100);
         status = db->Put(rocksdb::WriteOptions(), handles[c],
                          rocksdb::Slice(key), rocksdb::Slice(value));
         if (!status.ok())
