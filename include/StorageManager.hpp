@@ -1,7 +1,7 @@
 // Copyright 2020 Your Name <your_email>
 
-#ifndef STORAGE_STORAGEMANAGER_HPP
-#define STORAGE_STORAGEMANAGER_HPP
+#ifndef STORAGE_STORAGEMANAGER_HPP_
+#define STORAGE_STORAGEMANAGER_HPP_
 
 #include <rocksdb/db.h>
 
@@ -13,6 +13,7 @@
 #include "MyQueue.hpp"
 #include "CreateStorage.hpp"
 #include <ThreadPool.h>
+#include <vector>
 
 
 struct Cell{
@@ -25,7 +26,8 @@ struct Cell{
 
 class StorageManager {
  public:
-  StorageManager(std::string& input_filename, std::string& output_filename, size_t number_of_threads);
+  StorageManager(std::string& input_filename, std::string& output_filename,
+                 size_t number_of_threads);
   ~StorageManager();
   void WriteValue(Cell&& KeyHash);
   void ParseInputDB();
@@ -34,11 +36,11 @@ class StorageManager {
   void MainWork();
   void HashParsed();
 
-
  private:
   bool ParseFlag_ = false;
   bool HashFlag_ = false;
   bool WriteFlag_ = false;
+
  private:
   MyQueue<Cell> HashQueue_;
   MyQueue<Cell> WriteQueue_;
@@ -52,4 +54,4 @@ class StorageManager {
   ThreadPool HashPool_;
 };
 
-#endif  // STORAGEMANAGER_HPP
+#endif  // STORAGEMANAGER_HPP_

@@ -63,7 +63,6 @@ void CreateRandomDataBase(const std::string& directory) {
 
     delete db;
     BOOST_LOG_TRIVIAL(debug) << "Random data base created";
-
   } catch (std::exception& e) {
     BOOST_LOG_TRIVIAL(fatal) << e.what();
   }
@@ -75,9 +74,9 @@ void TryOpen(const std::string& directory) {
     rocksdb::DB* db;
     std::vector<std::string> names;
     std::vector<rocksdb::ColumnFamilyDescriptor> descriptors;
-    rocksdb::Status s = rocksdb::DB::ListColumnFamilies(rocksdb::DBOptions(), directory, &names);
-    if (!s.ok())
-      throw std::runtime_error{"ListColumn failed"};
+    rocksdb::Status s = rocksdb::DB::ListColumnFamilies(rocksdb::DBOptions(),
+                                                        directory, &names);
+    if (!s.ok()) throw std::runtime_error{"ListColumn failed"};
 
     descriptors.reserve(names.size());
     for (auto& x : names) {
@@ -85,14 +84,14 @@ void TryOpen(const std::string& directory) {
     }
 
     std::vector<rocksdb::ColumnFamilyHandle*> handles;
-    s = rocksdb::DB::OpenForReadOnly(
-        rocksdb::DBOptions(), directory, descriptors, &handles, &db);
+    s = rocksdb::DB::OpenForReadOnly(rocksdb::DBOptions(), directory,
+                                     descriptors, &handles, &db);
     if (!s.ok()) throw std::runtime_error{"DB::OpenForReadOnly failed"};
 
     rocksdb::Iterator* it = db->NewIterator(rocksdb::ReadOptions(), handles[1]);
     for (it->SeekToFirst(); it->Valid(); it->Next()) {
-      BOOST_LOG_TRIVIAL(trace)
-          << it->key().ToString() << ":" << it->value().ToString() << " can be read";
+      BOOST_LOG_TRIVIAL(trace) << it->key().ToString() << ":"
+                               << it->value().ToString() << " can be read";
     }
     if (!it->status().ok()) throw std::runtime_error("Iterator failed");
     delete it;
@@ -108,5 +107,5 @@ void TryOpen(const std::string& directory) {
   }
 }
 std::string sha256(const std::string& key, const std::string& value) {
-    return picosha2::hash256_hex_string(std::string(key + value));
+  return picosha2::hash256_hex_string(std::string(key + value));
 }

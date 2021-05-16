@@ -1,3 +1,4 @@
+// Copyright 2020 Your Name <your_email>
 #include "LogSettings.hpp"
 
 boost::log::trivial::severity_level choose_sev_level(
